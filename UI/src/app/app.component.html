@@ -1,0 +1,63 @@
+<div>
+  <p>Enter Phone Number:</p>
+  <input type="text" [(ngModel)]="phoneNumber" />
+  <button (click)="generateNumber()" [disabled]="invalidNumber">Generate</button>
+  <div class="error" *ngIf="!validateInputNumber()">
+    Please enter valid 7 or 10 digit phone number
+  </div>
+</div>
+<ng-container *ngIf="!!phoneNumbers">
+  <div class="">
+    <p>Total generated Numbers: {{count}}</p>
+    <table>
+      <thead>
+        <td>Sr No.</td>
+        <td>Generated Phone Number</td>
+        <td>Phone Number</td>
+      </thead>
+      <tbody>
+        <tr *ngFor="let phone of phoneNumbers">
+          <td>{{phone.id}}</td>
+          <td>{{phone.phoneNumber}}</td>
+          <td>{{phone.parentPhoneNumber}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</ng-container>
+<!-- Pagination -->
+<ng-container *ngIf="totalPages > 1">
+  <div class="page-box">
+    <nav>
+      <ul class="pagination">
+        <li [ngClass]="currentPage == 1 ? 'disabled' : ''">
+          <a class="" (click)="pageDecrement(1)">Previous</a>
+        </li>
+        <ng-container *ngIf="totalPages > 0">
+          <li [ngClass]="currentPage ==1 ? 'active': ''" (click)="pageJump(1)">
+            <a>1</a>
+          </li>
+          <ng-container *ngFor="let page of createPageNumber(); let first = first; let last = last;">
+            <li *ngIf="first && page >2" (click)="pageDecrement(0)">
+              <a>...</a>
+            </li>
+
+            <li [ngClass]="page === currentPage? 'active': ''" (click)="pageJump(page)">
+              <a>{{page}}</a>
+            </li>
+
+            <li *ngIf="last && page > totalPages - 1" (click)="pageDecrement(8)">
+              <a>...</a>
+            </li>
+          </ng-container>
+          <li [ngClass]="currentPage === totalPages? 'active': ''" (click)="pageJump(totalPages)">
+            <a>{{totalPages}}</a>
+          </li>
+        </ng-container>
+        <li [ngClass]="currentPage === totalPages? 'disabled': ''">
+          <a (click)="pageIncrement(1)">Next</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</ng-container>
